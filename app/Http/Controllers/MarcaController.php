@@ -14,7 +14,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        $marcas = Marca::all();
+        return $marcas;
     }
 
     /**
@@ -42,9 +43,9 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Marca $marca)
     {
-        //
+        return $marca;
     }
 
     /**
@@ -61,9 +62,15 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Marca $marca)
     {
-        //
+        /*
+        print_r($request->all());
+        echo '<hr>';
+        print_r($marca->getAttributes());
+        */
+        $marca->update($request->all());
+        return $marca;
     }
 
     /**
