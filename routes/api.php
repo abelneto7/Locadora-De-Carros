@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ModeloController;
+use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\CarroController;
+use App\Http\Controllers\LocacaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +27,8 @@ Route::get('/', function () {
     return ['Chegamos ate aqui' => 'SIM'];
 });
 
-Route::apiResource('marca', 'App\Http\Controllers\MarcaController');
-Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
-Route::apiResource('carro', 'App\Http\Controllers\CarroController');
-Route::apiResource('locacao', 'App\Http\Controllers\LocacaoController');
-Route::apiResource('cliente', 'App\Http\Controllers\ClienteController');
+Route::apiResource('marca', MarcaController::class);
+Route::apiResource('modelo', ModeloController::class);
+Route::apiResource('carro', CarroController::class);
+Route::apiResource('locacao', LocacaoController::class);
+Route::apiResource('cliente', ClienteController::class);
