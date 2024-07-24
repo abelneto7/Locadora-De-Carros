@@ -79,8 +79,12 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Marca $marca)
     {
-        //
+        /*
+        print_r($marca->getAttributes());
+        */
+        $marca->delete();
+        return ['msg' => 'Marca excluida com sucesso!'];
     }
 }
