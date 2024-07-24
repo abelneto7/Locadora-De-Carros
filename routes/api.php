@@ -21,3 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/', function () {
     return ['Chegamos ate aqui' => 'SIM'];
 });
+
+Route::apiResource('marca', 'App\Http\Controllers\MarcaController');
+Route::apiResource('modelo', 'App\Http\Controllers\ModeloController');
+Route::apiResource('carro', 'App\Http\Controllers\CarroController');
+Route::apiResource('locacao', 'App\Http\Controllers\LocacaoController');
+Route::apiResource('cliente', 'App\Http\Controllers\ClienteController');
