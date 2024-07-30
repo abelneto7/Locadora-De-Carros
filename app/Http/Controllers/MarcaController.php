@@ -35,9 +35,9 @@ class MarcaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $marca = $this->marca->all();
+        $marca = $this->marca->create($request->all());
         return $marca;
     }
 
@@ -50,6 +50,9 @@ class MarcaController extends Controller
     public function show($id)
     {
         $marca = $this->marca->find($id);
+        if($marca === null) {
+            return ['erro' => 'Recurso pesquisado não existe'];
+        }
         return $marca;
     }
 
@@ -69,12 +72,13 @@ class MarcaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*
-        print_r($request->all());
-        echo '<hr>';
-        print_r($marca->getAttributes());
-        */
         $marca = $this->marca->find($id);
+
+        if($marca === null) {
+            return ['erro' => 'Recurso solicitado não existe'];
+        }
+
+        $marca->update($request->all());
         return $marca;
     }
 
@@ -86,10 +90,12 @@ class MarcaController extends Controller
      */
     public function destroy($id)
     {
-        /*
-        print_r($marca->getAttributes());
-        */
         $marca = $this->marca->find($id);
+
+        if($marca === null) {
+            return ['erro' => 'Recurso solicitado não existe'];
+        }
+        
         $marca->delete();
         return ['msg' => 'Marca excluida com sucesso!'];
     }
