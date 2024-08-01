@@ -20,8 +20,10 @@ class MarcaController extends Controller
     public function index()
     {
         $marcas = $this->marca->all();
-        return $marcas;
+        return response()->json($marcas, 200);
     }
+
+    //developermozilla.org
 
     /**
      * Show the form for creating a new resource.
@@ -38,7 +40,7 @@ class MarcaController extends Controller
     public function store(Request $request)
     {
         $marca = $this->marca->create($request->all());
-        return $marca;
+        return response()->json($marca, 201);
     }
 
     /**
@@ -51,9 +53,9 @@ class MarcaController extends Controller
     {
         $marca = $this->marca->find($id);
         if($marca === null) {
-            return ['erro' => 'Recurso pesquisado não existe'];
+            return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
-        return $marca;
+        return response()->json($marca, 200);
     }
 
     /**
@@ -75,11 +77,11 @@ class MarcaController extends Controller
         $marca = $this->marca->find($id);
 
         if($marca === null) {
-            return ['erro' => 'Recurso solicitado não existe'];
+            return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
 
         $marca->update($request->all());
-        return $marca;
+        return response()->json($marca, 200);
     }
 
     /**
@@ -93,10 +95,10 @@ class MarcaController extends Controller
         $marca = $this->marca->find($id);
 
         if($marca === null) {
-            return ['erro' => 'Recurso solicitado não existe'];
+            return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
         
         $marca->delete();
-        return ['msg' => 'Marca excluida com sucesso!'];
+        return response()->json(['msg' => 'Marca excluida com sucesso!'], 200);
     }
 }
