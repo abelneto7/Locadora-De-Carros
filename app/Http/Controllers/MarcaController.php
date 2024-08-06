@@ -39,6 +39,9 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate($this->marca->rules(), $this->marca->feedback());
+        //No postman->POST(Headers)->Key=Accept; Value=application/json
+
         $marca = $this->marca->create($request->all());
         return response()->json($marca, 201);
     }
@@ -79,6 +82,8 @@ class MarcaController extends Controller
         if($marca === null) {
             return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
+
+        $request->validate($this->marca->rules(), $this->marca->feedback());
 
         $marca->update($request->all());
         return response()->json($marca, 200);
