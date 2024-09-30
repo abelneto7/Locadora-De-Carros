@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
+use Illuminate\Support\FAcades\Storage;
 
 class MarcaController extends Controller
 {
@@ -40,9 +41,15 @@ class MarcaController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->marca->rules(), $this->marca->feedback());
-        //No postman->POST(Headers)->Key=Accept; Value=application/json
 
-        $marca = $this->marca->create($request->all());
+        $image = $request->file('imagem');
+        $imagem_urn = $image->store('imagens', 'public');
+
+        $marca = $this->marca->create([
+            'nome' => $request->nome,
+            'imagem' => $imagem_urn
+        ]);
+
         return response()->json($marca, 201);
     }
 
@@ -79,11 +86,14 @@ class MarcaController extends Controller
     {
         $marca = $this->marca->find($id);
 
+        //dd($request->nome);
+        //dd($request->file('imagem'));
+
         if($marca === null) {
             return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
 
-        if($request->method === 'PATCH'){
+        if($request->method() === 'PATCH'){
 
             $regrasDinamicas = array();
 
@@ -95,14 +105,25 @@ class MarcaController extends Controller
                 }
             }
             $request->validate($regrasDinamicas, $marca->feedback());
-        
+
         } else {
             $request->validate($marca->rules(), $marca->feedback());
         }
 
+        //remove o arquivo antigo caso um novo arquivo tenha sido enviado no request
+        if ($request->file('imagem')){
+            Storage::disk('public')->delete($marca->imagem);
+        }
+
+        $image = $request->file('imagem');
+        $imagem_urn = $image->store('imagens', 'public');
+
         $request->validate($this->marca->rules(), $this->marca->feedback());
 
-        $marca->update($request->all());
+        $marca->update($request->all([
+            'nome' => $request->nome,
+            'imagem' => $imagem_urn
+        ]));
         return response()->json($marca, 200);
     }
 
@@ -119,7 +140,7 @@ class MarcaController extends Controller
         if($marca === null) {
             return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
-        
+
         $marca->delete();
         return response()->json(['msg' => 'Marca excluida com sucesso!'], 200);
     }
