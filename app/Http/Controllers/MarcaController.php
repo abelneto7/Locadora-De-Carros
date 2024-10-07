@@ -118,12 +118,19 @@ class MarcaController extends Controller
         $image = $request->file('imagem');
         $imagem_urn = $image->store('imagens', 'public');
 
-        $request->validate($this->marca->rules(), $this->marca->feedback());
+        //preencher o objeto $marca com os dados do request
+        $marca->fill($request->all());
+        $marca->imagem = $imagem_urn;
+        //dd($marca->getAttributes());
+        $marca->save();
 
+        /*
         $marca->update($request->all([
             'nome' => $request->nome,
             'imagem' => $imagem_urn
         ]));
+        */
+
         return response()->json($marca, 200);
     }
 
