@@ -22,7 +22,9 @@ class ModeloController extends Controller
 
     public function index()
     {
-        return response()->json($this->modelo->all(), 200);
+        return response()->json($this->modelo->with('marca')->get(), 200);
+        //all() -> criando objeto de consulta + metodo get() = collection
+        //get() -> modificar consulta -> collection
     }
 
     /**
@@ -70,7 +72,7 @@ class ModeloController extends Controller
      */
     public function show($id)
     {
-        $modelo = $this->modelo->find($id);
+        $modelo = $this->modelo->with('marca')->find($id); //with-> tras os dados do relacionamento a consulta.
         if($modelo === null) {
             return response()->json(['erro' => 'Recurso solicitado não existe'], 404);
         }
