@@ -24,21 +24,20 @@ class ModeloController extends Controller
     {
         $modelos = array();
 
+        if ($request->has('atributos_marrca')){
+            $atributos_marca = $request->atributos_marca;
+            $modelos = $this->modelo->with('marca:id'.$atributos_marca);
+        } else {
+            $modelos = $this->modelo->with('marca');
+        }
+
         if ($request->has('atributos')){
             $atributos = $request->atributos;
-            $modelos = $this->modelo->selectRaw($atributos)->with('marca')->get(); //precisa recuperar marca_id
-
-            //'id', 'nome', 'imagem'
-            //"id,nome,imagem" -> selectRaw aceita a inclusão dessa forma
-
-            //dd($request->atributos);
+            $modelos = $modelos->selectRaw($atributos)->get(); //precisa recuperar marca_id
         } else {
-            $modelos = $this->modelo->with('marca')->get();
+            $modelos = $modelos->get();
         }
-        //$this->modelo->with('marca')->get()
         return response()->json($modelos, 200);
-        //all() -> criando objeto de consulta + metodo get() = collection
-        //get() -> modificar consulta -> collection
     }
 
     /**
