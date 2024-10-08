@@ -24,16 +24,19 @@ class ModeloController extends Controller
     {
         $modelos = array();
 
-        if ($request->has('atributos_marrca')){
+        if ($request->has('atributos_marca')){
             $atributos_marca = $request->atributos_marca;
-            $modelos = $this->modelo->with('marca:id'.$atributos_marca);
+            $modelos = $this->modelo->with('marca:id,'.$atributos_marca);
         } else {
             $modelos = $this->modelo->with('marca');
         }
 
-        if ($request->has('filtros')){
-            $condicoes = explode(':', $request->filtros);
-            $modelos = $modelos->where($condicoes[0], $condicoes[1], $condicoes[2]);
+        if ($request->has('filtro')){
+            $filtros = explode(';', $request->filtro);
+            foreach ($filtros as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $modelos = $modelos->where($c[0], $c[1], $c[2]);
+            }
         }
 
         if ($request->has('atributos')){
