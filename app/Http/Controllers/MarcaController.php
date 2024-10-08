@@ -42,8 +42,8 @@ class MarcaController extends Controller
     {
         $request->validate($this->marca->rules(), $this->marca->feedback());
 
-        $image = $request->file('imagem');
-        $imagem_urn = $image->store('imagens', 'public');
+        $imagem = $request->file('imagem');
+        $imagem_urn = $imagem->store('imagens', 'public');
 
         $marca = $this->marca->create([
             'nome' => $request->nome,
@@ -115,14 +115,15 @@ class MarcaController extends Controller
             Storage::disk('public')->delete($marca->imagem);
         }
 
-        $image = $request->file('imagem');
-        $imagem_urn = $image->store('imagens', 'public');
+        $imagem = $request->file('imagem');
+        $imagem_urn = $imagem->store('imagens', 'public');
 
         //preencher o objeto $marca com os dados do request
         $marca->fill($request->all());
         $marca->imagem = $imagem_urn;
         //dd($marca->getAttributes());
         $marca->save();
+        // faz o update quando o id ja estiver definido
 
         /*
         $marca->update($request->all([

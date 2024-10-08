@@ -20,9 +20,23 @@ class ModeloController extends Controller
         $this->modelo = $modelo;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json($this->modelo->with('marca')->get(), 200);
+        $modelos = array();
+
+        if ($request->has('atributos')){
+            $atributos = $request->atributos;
+            $modelos = $this->modelo->selectRaw($atributos)->with('marca')->get(); //precisa recuperar marca_id
+
+            //'id', 'nome', 'imagem'
+            //"id,nome,imagem" -> selectRaw aceita a inclusão dessa forma
+
+            //dd($request->atributos);
+        } else {
+            $modelos = $this->modelo->with('marca')->get();
+        }
+        //$this->modelo->with('marca')->get()
+        return response()->json($modelos, 200);
         //all() -> criando objeto de consulta + metodo get() = collection
         //get() -> modificar consulta -> collection
     }
@@ -47,8 +61,8 @@ class ModeloController extends Controller
     {
         $request->validate($this->modelo->rules());
 
-        $image = $request->file('imagem');
-        $imagem_urn = $image->store('imagens/modelos', 'public');
+        $imagem = $request->file('imagem');
+        $imagem_urn = $imagem->store('imagens/modelos', 'public');
 
         $modelo = $this->modelo->create([
             'marca_id' => $request->marca_id,
@@ -127,8 +141,8 @@ class ModeloController extends Controller
             Storage::disk('public')->delete($modelo->imagem);
         }
 
-        $image = $request->file('imagem');
-        $imagem_urn = $image->store('imagens/modelos', 'public');
+        $imagem = $request->file('imagem');
+        $imagem_urn = $imagem->store('imagens/modelos', 'public');
 
         $modelo->fill($request->all());
         $modelo->imagem = $imagem_urn;
