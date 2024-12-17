@@ -64,6 +64,20 @@
 
 <script>
 export default {
+    computed: {
+        token() {
+
+            let token = document.cookie.split(';').find(indice => {
+                return indice.includes('token=')
+            })
+
+            token = token.split('=')[1]
+            token = 'Bearer ' + token
+
+            return token
+        }
+    },
+
     data() {
         return {
             urlBase: 'http://127.0.0.1:8012/api/v1/marca',
@@ -73,20 +87,21 @@ export default {
     },
 
     methods: {
-        carregarImagem(e){
+        carregarImagem(e) {
             this.arquivoImagem = e.target.files
         },
-        salvar(){
+        salvar() {
             console.log(this.nomeMarca, this.arquivoImagem[0])
 
-            let formData = new FormData(); //Instanciando um formulário para que possamos definir o atributo
+            let formData = new FormData();
             formData.append('nome', this.nomeMarca)
             formData.append('imagem', this.arquivoImagem[0])
 
             let config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authorization': this.token
                 }
             }
 

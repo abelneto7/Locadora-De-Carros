@@ -2236,7 +2236,7 @@ __webpack_require__.r(__webpack_exports__);
         return response.json();
       }).then(function (data) {
         if (data.token) {
-          document.cookie = 'token=' + data.token + '.SameSite=Lax';
+          document.cookie = 'token=' + data.token;
         }
 
         //dar sequencia no envio do form de autenticação por sessão
@@ -2325,6 +2325,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  computed: {
+    token: function token() {
+      var token = document.cookie.split(';').find(function (indice) {
+        return indice.includes('token=');
+      });
+      token = token.split('=')[1];
+      token = 'Bearer ' + token;
+      return token;
+    }
+  },
   data: function data() {
     return {
       urlBase: 'http://127.0.0.1:8012/api/v1/marca',
@@ -2338,13 +2348,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     salvar: function salvar() {
       console.log(this.nomeMarca, this.arquivoImagem[0]);
-      var formData = new FormData(); //Instanciando um formulário para que possamos definir o atributo
+      var formData = new FormData();
       formData.append('nome', this.nomeMarca);
       formData.append('imagem', this.arquivoImagem[0]);
       var config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': this.token
         }
       };
       axios.post(this.urlBase, formData, config).then(function (response) {
