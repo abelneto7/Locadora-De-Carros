@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09fab3b2-48bd-4a86-b2de-8a6d6a3f3680" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/js/components/Paginate.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MarcaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MarcaController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/AbstractRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/AbstractRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/popper.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/popper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/Marcas.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Marcas.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/Table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Table.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,7 +212,7 @@
       <workItem from="1738845670274" duration="5817000" />
       <workItem from="1738933811818" duration="1002000" />
       <workItem from="1738934842663" duration="340000" />
-      <workItem from="1739189232828" duration="6383000" />
+      <workItem from="1739189232828" duration="7109000" />
     </task>
     <servers />
   </component>
