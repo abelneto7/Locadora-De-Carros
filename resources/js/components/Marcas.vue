@@ -30,6 +30,9 @@
                     <template v-slot:conteudo>
                         <table-component
                             :dados="marcas.data"
+                            :visualizar="{visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}"
+                            :atualizar="true"
+                            :remover="true"
                             :titulos = "{
                                 id: {titulo: 'ID', tipo: 'texto'},
                                 nome: {titulo: 'Nome', tipo: 'texto'},
@@ -63,6 +66,8 @@
                 <!-- Fim do card de listagem-->
             </div>
         </div>
+
+        <!-- Inicio do modal de inclusão de marca -->
         <modal-component id="modalMarca" titulo="Adicionar Marca">
 
             <template v-slot:alertas>
@@ -91,6 +96,36 @@
                 <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
             </template>
         </modal-component>
+        <!-- Fim do modal de inclusão de marca -->
+
+        <!-- Inicio do modal de visualização de marca -->
+        <modal-component id="modalMarcaVisualizar" titulo="Visualizar Marca">
+            <template v-slot:alertas>
+            </template>
+
+            <template v-slot:conteudo>
+                <input-container-component titulo="ID">
+                    <input type="text" class="form-control" :value="$store.state.item.id" disabled>
+                </input-container-component>
+
+                <input-container-component titulo="Nome da marca">
+                    <input type="text" class="form-control" :value="$store.state.item.nome" disabled>
+                </input-container-component>
+
+                <input-container-component titulo="Imagem">
+                    <img :src="'/storage/'+$store.state.item.imagem" v-if="$store.state.item.imagem" width="60" height="60">
+                </input-container-component>
+
+                <input-container-component titulo="Data de criação">
+                    <input type="text" class="form-control" :value="$store.state.item.created_at" disabled>
+                </input-container-component>
+            </template>
+
+            <template v-slot:rodape>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </template>
+        </modal-component>
+        <!-- Fim do modal de visualização de marca -->
     </div>
 </template>
 
@@ -133,7 +168,8 @@ export default {
                     if (filtro != ''){
                         filtro += ";"
                     }
-                    filtro += chave + ':like:' + this.busca[chave]
+                    filtro += chave + ':like:' +
+                        '' + this.busca[chave]
                 }
             }
 
@@ -148,7 +184,6 @@ export default {
         },
         paginacao(l){
           if(l.url){
-              //this.urlBase = l.url
               this.urlPaginacao = l.url.split('?')[1]
               this.carregarLista()
           }
