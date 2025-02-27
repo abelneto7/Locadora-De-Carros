@@ -156,7 +156,8 @@
         <modal-component id="modalMarcaAtualizar" titulo="Atualizar Marca">
 
         <template v-slot:alertas>
-            
+            <alert-component tipo="success" titulo="Transação realizada com sucesso" :detalhes="$store.state.transacao" v-if="$store.state.transacao.status == 'sucesso'"></alert-component>
+            <alert-component tipo="danger" titulo="Erro na transação" :detalhes="$store.state.transacao" v-if="$store.state.transacao.status == 'erro'"></alert-component>
         </template>
 
         <template v-slot:conteudo>
@@ -218,10 +219,14 @@ export default {
     methods: {
         atualizar() {
             let formData = new FormData();
-
             formData.append('_method', 'patch')
             formData.append('nome', this.$store.state.item.nome)
-            formData.append('imagem', this.arquivoImagem[0])
+
+            if(this.arquivoImagem[0]){
+                formData.append('imagem', this.arquivoImagem[0])
+            }
+
+            let url = this.urlBase+'/'+this.$store.state.item.id
 
             let config = {
                 headers: {
@@ -230,16 +235,20 @@ export default {
                     'Authorization': this.token
                 }
             }
-
-            let url = this.urlBase+'/'+this.$store.state.item.id
-
+            
             axios.post(url, formData, config)
                 .then(response => {
-                    console.log('Atualizado', response)
-                    this.carregarLista
+                    this.$store.state.transacao.status = 'sucesso'
+                    this.$store.state.transacao.mensagem = 'Registro de marca atualizado com sucesso.'
+
+                    //Limpar campo de seleção de arquivos
+                    atualizarImagem.value = ''
+                    this.carregarLista()
                 })
                 .catch(errors => {
-                    console.log('Erro', errors.response)
+                    this.$store.state.transacao.status = 'erro'
+                    this.$store.state.transacao.mensagem = errors.response.data.message
+                    this.$store.state.transacao.dados = errors.response.data.errors                    
                 })
         },
         remover(){
@@ -310,11 +319,9 @@ export default {
             }
 
             let url = this.urlBase + '?' + this.urlPaginacao + this.urlFiltro
-            console.log(url)
             axios.get(url, config)
                 .then(response => {
                     this.marcas = response.data
-                    console.log(this.marcas.data)
                 })
                 .catch(errors => {
                     console.log(errors)
