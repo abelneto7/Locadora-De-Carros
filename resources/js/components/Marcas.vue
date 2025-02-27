@@ -162,7 +162,7 @@
         <template v-slot:conteudo>
             <div class="form-group">
                 <input-container-component titulo="Nome da marca" id="atualizarNome" id-help="atualizarNomeHelp" texto-ajuda="Informe o nome da marca.">
-                    <input type="text" class="form-control" id="atualizarNome" aria-describedby="atualizarNomeHelp" placeholder="Nome da marca" v-model="nomeMarca">
+                    <input type="text" class="form-control" id="atualizarNome" aria-describedby="atualizarNomeHelp" placeholder="Nome da marca" v-model="$store.state.item.nome">
                 </input-container-component>
             </div>
 
@@ -184,6 +184,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     computed: {
         token() {
@@ -215,7 +217,30 @@ export default {
 
     methods: {
         atualizar() {
-            console.log(this.$store.state.item)
+            let formData = new FormData();
+
+            formData.append('_method', 'patch')
+            formData.append('nome', this.$store.state.item.nome)
+            formData.append('imagem', this.arquivoImagem[0])
+
+            let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
+                    'Authorization': this.token
+                }
+            }
+
+            let url = this.urlBase+'/'+this.$store.state.item.id
+
+            axios.post(url, formData, config)
+                .then(response => {
+                    console.log('Atualizado', response)
+                    this.carregarLista
+                })
+                .catch(errors => {
+                    console.log('Erro', errors.response)
+                })
         },
         remover(){
             let confirmacao = confirm('Tem certeza que deseja remover esse registro? ')
